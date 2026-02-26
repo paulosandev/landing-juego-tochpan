@@ -44,8 +44,9 @@ export function maskPhone(phone) {
  *
  * @param phone - The player's phone number
  * @param score - The score to save
+ * @param playerName - The player's name
  */
-function savePendingScore(phone, score) {
+function savePendingScore(phone, score, playerName = '') {
     try {
         const pending = getPendingScores();
         // Update existing entry or add new one
@@ -53,11 +54,11 @@ function savePendingScore(phone, score) {
         if (existingIndex >= 0) {
             // Only update if new score is higher
             if (score > pending[existingIndex].score) {
-                pending[existingIndex] = { phone, score, timestamp: Date.now() };
+                pending[existingIndex] = { phone, score, playerName, timestamp: Date.now() };
             }
         }
         else {
-            pending.push({ phone, score, timestamp: Date.now() });
+            pending.push({ phone, score, playerName, timestamp: Date.now() });
         }
         localStorage.setItem(PENDING_SCORES_KEY, JSON.stringify(pending));
     }
@@ -101,9 +102,10 @@ function removePendingScore(phone) {
  *
  * @param phone - The player's phone number (10 digits)
  * @param score - The score to submit
+ * @param playerName - The player's name
  * @returns Promise resolving to submission result
  */
-export async function submitScore(phone, score) {
+export async function submitScore(phone, score, playerName = '') {
     // Validate phone before submission
     if (!validatePhone(phone)) {
         return { success: false, isNewRecord: false, error: 'Ingresa 10 dígitos' };
@@ -114,7 +116,7 @@ export async function submitScore(phone, score) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ phone, score }),
+            body: JSON.stringify({ phone, score, playerName }),
         });
         if (response.ok) {
             const data = await response.json();
@@ -132,7 +134,7 @@ export async function submitScore(phone, score) {
         }
         if (response.status === 429) {
             // Rate limited - save locally and inform user
-            savePendingScore(phone, score);
+            savePendingScore(phone, score, playerName);
             return {
                 success: false,
                 isNewRecord: false,
@@ -145,7 +147,7 @@ export async function submitScore(phone, score) {
     }
     catch (error) {
         // Network error or server error - save locally
-        savePendingScore(phone, score);
+        savePendingScore(phone, score, playerName);
         return {
             success: false,
             isNewRecord: false,
@@ -169,6 +171,7 @@ export async function fetchTopScores() {
         return data.scores.map((entry, index) => ({
             rank: index + 1,
             displayPhone: entry.display_phone,
+            playerName: entry.player_name || '',
             score: entry.score,
             isCurrentPlayer: false,
         }));
@@ -191,7 +194,7 @@ export async function retryPendingScores() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ phone: entry.phone, score: entry.score }),
+                body: JSON.stringify({ phone: entry.phone, score: entry.score, playerName: entry.playerName || '' }),
             });
             if (response.ok) {
                 removePendingScore(entry.phone);
@@ -204,7 +207,7 @@ export async function retryPendingScores() {
     }
 }
 /**
- * PhoneInputModal - Modal component for collecting phone number input.
+ * PhoneInputModal - Modal component for collecting phone number and name input.
  * Displays when a player achieves a new high score.
  * Requirement: 7.1
  */
@@ -212,7 +215,8 @@ export class PhoneInputModal {
     constructor() {
         this.overlay = null;
         this.container = null;
-        this.input = null;
+        this.nameInput = null;
+        this.phoneInput = null;
         this.errorElement = null;
         this.submitButton = null;
         this.isSubmitting = false;
@@ -264,7 +268,7 @@ export class PhoneInputModal {
       margin: 0 0 0.5rem 0;
     `;
         const subtitle = document.createElement('p');
-        subtitle.textContent = 'Ingresa tu número para guardar tu puntuación';
+        subtitle.textContent = 'Ingresa tus datos para guardar tu puntuación';
         subtitle.style.cssText = `
       font-family: "Quicksand", sans-serif;
       font-size: 0.875rem;
@@ -277,13 +281,63 @@ export class PhoneInputModal {
         // Create input container
         const inputContainer = document.createElement('div');
         inputContainer.style.cssText = `margin-bottom: 1rem;`;
-        this.input = document.createElement('input');
-        this.input.type = 'tel';
-        this.input.placeholder = '10 dígitos';
-        this.input.maxLength = 10;
-        this.input.inputMode = 'numeric';
-        this.input.pattern = '[0-9]*';
-        this.input.style.cssText = `
+        // Name input
+        const nameLabel = document.createElement('label');
+        nameLabel.textContent = 'Tu nombre';
+        nameLabel.style.cssText = `
+      display: block;
+      font-family: "Quicksand", sans-serif;
+      font-size: 0.875rem;
+      color: ${COLORS.dark};
+      margin-bottom: 0.25rem;
+      text-align: left;
+    `;
+        this.nameInput = document.createElement('input');
+        this.nameInput.type = 'text';
+        this.nameInput.placeholder = 'Ej: Juan';
+        this.nameInput.maxLength = 50;
+        this.nameInput.style.cssText = `
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-family: "Quicksand", sans-serif;
+      font-size: 1rem;
+      border: 2px solid ${COLORS.beige};
+      border-radius: 0.5rem;
+      background-color: ${COLORS.light};
+      color: ${COLORS.dark};
+      outline: none;
+      transition: border-color 0.15s;
+      box-sizing: border-box;
+      margin-bottom: 1rem;
+    `;
+        this.nameInput.addEventListener('focus', () => {
+            if (this.nameInput) {
+                this.nameInput.style.borderColor = COLORS.accent;
+            }
+        });
+        this.nameInput.addEventListener('blur', () => {
+            if (this.nameInput) {
+                this.nameInput.style.borderColor = COLORS.beige;
+            }
+        });
+        // Phone input
+        const phoneLabel = document.createElement('label');
+        phoneLabel.textContent = 'Tu teléfono';
+        phoneLabel.style.cssText = `
+      display: block;
+      font-family: "Quicksand", sans-serif;
+      font-size: 0.875rem;
+      color: ${COLORS.dark};
+      margin-bottom: 0.25rem;
+      text-align: left;
+    `;
+        this.phoneInput = document.createElement('input');
+        this.phoneInput.type = 'tel';
+        this.phoneInput.placeholder = '10 dígitos';
+        this.phoneInput.maxLength = 10;
+        this.phoneInput.inputMode = 'numeric';
+        this.phoneInput.pattern = '[0-9]*';
+        this.phoneInput.style.cssText = `
       width: 100%;
       padding: 1rem;
       font-family: "Quicksand", sans-serif;
@@ -299,29 +353,32 @@ export class PhoneInputModal {
       box-sizing: border-box;
     `;
         // Input focus styles
-        this.input.addEventListener('focus', () => {
-            if (this.input) {
-                this.input.style.borderColor = COLORS.accent;
+        this.phoneInput.addEventListener('focus', () => {
+            if (this.phoneInput) {
+                this.phoneInput.style.borderColor = COLORS.accent;
             }
         });
-        this.input.addEventListener('blur', () => {
-            if (this.input) {
-                this.input.style.borderColor = COLORS.beige;
+        this.phoneInput.addEventListener('blur', () => {
+            if (this.phoneInput) {
+                this.phoneInput.style.borderColor = COLORS.beige;
             }
         });
         // Only allow numeric input
-        this.input.addEventListener('input', (e) => {
+        this.phoneInput.addEventListener('input', (e) => {
             const target = e.target;
             target.value = target.value.replace(/\D/g, '');
             this.clearError();
         });
         // Submit on Enter
-        this.input.addEventListener('keydown', (e) => {
+        this.phoneInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 this.handleSubmit();
             }
         });
-        inputContainer.appendChild(this.input);
+        inputContainer.appendChild(nameLabel);
+        inputContainer.appendChild(this.nameInput);
+        inputContainer.appendChild(phoneLabel);
+        inputContainer.appendChild(this.phoneInput);
         // Create error element
         this.errorElement = document.createElement('p');
         this.errorElement.style.cssText = `
@@ -423,9 +480,12 @@ export class PhoneInputModal {
         if (this.overlay) {
             this.overlay.style.display = 'flex';
         }
-        if (this.input) {
-            this.input.value = '';
-            this.input.focus();
+        if (this.nameInput) {
+            this.nameInput.value = '';
+            this.nameInput.focus();
+        }
+        if (this.phoneInput) {
+            this.phoneInput.value = '';
         }
         this.clearError();
         this.setSubmitting(false);
@@ -453,9 +513,10 @@ export class PhoneInputModal {
      * Handles the submit action.
      */
     async handleSubmit() {
-        if (this.isSubmitting || !this.input || !this.onSubmitCallback)
+        if (this.isSubmitting || !this.phoneInput || !this.nameInput || !this.onSubmitCallback)
             return;
-        const phone = this.input.value;
+        const phone = this.phoneInput.value;
+        const playerName = this.nameInput.value.trim();
         // Validate phone number - Requirement 7.2
         if (!validatePhone(phone)) {
             this.showError('Ingresa 10 dígitos');
@@ -464,7 +525,7 @@ export class PhoneInputModal {
         this.setSubmitting(true);
         this.clearError();
         try {
-            const result = await this.onSubmitCallback(phone);
+            const result = await this.onSubmitCallback(phone, playerName);
             if (result.success || result.savedLocally) {
                 // Success or saved locally - close modal
                 this.hide();
@@ -487,8 +548,8 @@ export class PhoneInputModal {
         if (this.errorElement) {
             this.errorElement.textContent = message;
         }
-        if (this.input) {
-            this.input.style.borderColor = '#dc2626';
+        if (this.phoneInput) {
+            this.phoneInput.style.borderColor = '#dc2626';
         }
     }
     /**
@@ -498,8 +559,8 @@ export class PhoneInputModal {
         if (this.errorElement) {
             this.errorElement.textContent = '';
         }
-        if (this.input) {
-            this.input.style.borderColor = COLORS.beige;
+        if (this.phoneInput) {
+            this.phoneInput.style.borderColor = COLORS.beige;
         }
     }
     /**
@@ -513,8 +574,11 @@ export class PhoneInputModal {
             this.submitButton.style.opacity = submitting ? '0.6' : '1';
             this.submitButton.style.cursor = submitting ? 'not-allowed' : 'pointer';
         }
-        if (this.input) {
-            this.input.disabled = submitting;
+        if (this.phoneInput) {
+            this.phoneInput.disabled = submitting;
+        }
+        if (this.nameInput) {
+            this.nameInput.disabled = submitting;
         }
     }
     /**
@@ -526,7 +590,8 @@ export class PhoneInputModal {
         }
         this.overlay = null;
         this.container = null;
-        this.input = null;
+        this.nameInput = null;
+        this.phoneInput = null;
         this.errorElement = null;
         this.submitButton = null;
         this.onSubmitCallback = null;
@@ -539,6 +604,7 @@ export class PhoneInputModal {
 export class ScoreApi {
     constructor() {
         this.currentPlayerPhone = null;
+        this.currentPlayerName = null;
         this.phoneModal = new PhoneInputModal();
         // Try to submit any pending scores on initialization
         retryPendingScores();
@@ -550,7 +616,13 @@ export class ScoreApi {
         return this.currentPlayerPhone;
     }
     /**
-     * Prompts the user to enter their phone number and submit their score.
+     * Gets the current player's name (if set).
+     */
+    getCurrentPlayerName() {
+        return this.currentPlayerName;
+    }
+    /**
+     * Prompts the user to enter their phone number and name, then submit their score.
      * Requirement: 7.1
      *
      * @param score - The score to submit
@@ -558,10 +630,11 @@ export class ScoreApi {
      */
     async promptAndSubmitScore(score) {
         return new Promise((resolve) => {
-            this.phoneModal.show(async (phone) => {
-                const result = await submitScore(phone, score);
+            this.phoneModal.show(async (phone, playerName) => {
+                const result = await submitScore(phone, score, playerName);
                 if (result.success || result.savedLocally) {
                     this.currentPlayerPhone = phone;
+                    this.currentPlayerName = playerName;
                 }
                 resolve(result);
                 return result;

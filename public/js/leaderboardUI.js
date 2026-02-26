@@ -231,16 +231,30 @@ export class LeaderboardUI {
       text-align: center;
     `;
         rankSection.appendChild(rankNumber);
+        // Name section
+        const nameSection = document.createElement('span');
+        nameSection.textContent = entry.playerName || 'Anónimo';
+        nameSection.style.cssText = `
+      font-family: "Quicksand", sans-serif;
+      font-size: 0.875rem;
+      color: ${textColor};
+      flex: 1;
+      text-align: left;
+      font-weight: ${entry.isCurrentPlayer ? '700' : '400'};
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 120px;
+    `;
         // Phone section (masked)
         const phoneSection = document.createElement('span');
         phoneSection.textContent = entry.displayPhone;
         phoneSection.style.cssText = `
       font-family: "Quicksand", sans-serif;
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       color: ${textColor};
-      flex: 1;
       text-align: center;
-      opacity: ${entry.isCurrentPlayer ? '1' : '0.8'};
+      opacity: ${entry.isCurrentPlayer ? '1' : '0.6'};
     `;
         // Score section
         const scoreSection = document.createElement('span');
@@ -254,6 +268,7 @@ export class LeaderboardUI {
       font-weight: ${entry.isCurrentPlayer ? '700' : '400'};
     `;
         element.appendChild(rankSection);
+        element.appendChild(nameSection);
         element.appendChild(phoneSection);
         element.appendChild(scoreSection);
         // Hover effect

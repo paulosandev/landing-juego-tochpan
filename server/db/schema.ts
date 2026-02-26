@@ -19,11 +19,19 @@ export function initializeSchema(db: Database.Database): void {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       phone_hash TEXT UNIQUE NOT NULL,
       display_phone TEXT NOT NULL,
+      player_name TEXT NOT NULL DEFAULT '',
       score INTEGER NOT NULL DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
+  
+  // Add player_name column if it doesn't exist (migration for existing databases)
+  try {
+    db.exec(`ALTER TABLE player_records ADD COLUMN player_name TEXT NOT NULL DEFAULT ''`);
+  } catch (e) {
+    // Column already exists, ignore error
+  }
 
   // Create index for score queries (leaderboard - descending order)
   db.exec(`

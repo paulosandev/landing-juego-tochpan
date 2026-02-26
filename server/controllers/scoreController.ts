@@ -17,7 +17,7 @@ import { validate } from '../utils/phoneValidator';
  * POST /api/scores
  * Submit a new score for a player.
  * 
- * Request body: { phone: string, score: number }
+ * Request body: { phone: string, score: number, playerName?: string }
  * Response: { success: boolean, isNewRecord: boolean }
  * 
  * Error responses:
@@ -27,7 +27,7 @@ import { validate } from '../utils/phoneValidator';
  * Requirements: 9.1, 9.4
  */
 export async function submitScore(req: Request, res: Response): Promise<void> {
-  const { phone, score } = req.body;
+  const { phone, score, playerName } = req.body;
 
   // Validate phone number format (Requirement 9.4)
   if (typeof phone !== 'string' || !validate(phone)) {
@@ -41,8 +41,11 @@ export async function submitScore(req: Request, res: Response): Promise<void> {
     return;
   }
 
+  // Validate playerName if provided
+  const name = typeof playerName === 'string' ? playerName : '';
+
   try {
-    const result = await saveScore(phone, score);
+    const result = await saveScore(phone, score, name);
     res.json({
       success: result.success,
       isNewRecord: result.isNewRecord,

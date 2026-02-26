@@ -17,6 +17,7 @@ export interface PlayerRecord {
   id: number;
   phoneHash: string;
   displayPhone: string;
+  playerName: string;
   score: number;
   createdAt: string;
   updatedAt: string;
@@ -27,11 +28,12 @@ export interface PlayerRecord {
  * 
  * @param phone - The player's 10-digit phone number
  * @param score - The score to save
+ * @param playerName - The player's name
  * @returns SaveResult indicating success and whether it's a new record
  * 
  * Requirements: 7.4 - Only updates if new score is higher
  */
-export async function saveScore(phone: string, score: number): Promise<SaveResult> {
+export async function saveScore(phone: string, score: number, playerName: string = ''): Promise<SaveResult> {
   if (!validate(phone)) {
     return { success: false, isNewRecord: false };
   }
@@ -43,6 +45,7 @@ export async function saveScore(phone: string, score: number): Promise<SaveResul
   const db = getDatabase();
   const phoneHash = hash(phone);
   const displayPhone = mask(phone);
+  const sanitizedName = playerName.trim().slice(0, 50); // Limit name length
 
   // Check for existing record
   const existing = db.prepare(
@@ -53,8 +56,8 @@ export async function saveScore(phone: string, score: number): Promise<SaveResul
     // Only update if new score is higher (Requirement 7.4)
     if (score > existing.score) {
       db.prepare(
-        'UPDATE player_records SET score = ?, updated_at = CURRENT_TIMESTAMP WHERE phone_hash = ?'
-      ).run(score, phoneHash);
+        'UPDATE player_records SET score = ?, player_name = ?, updated_at = CURRENT_TIMESTAMP WHERE phone_hash = ?'
+      ).run(score, sanitizedName, phoneHash);
       
       return {
         success: true,
@@ -73,8 +76,8 @@ export async function saveScore(phone: string, score: number): Promise<SaveResul
 
   // Insert new record
   db.prepare(
-    'INSERT INTO player_records (phone_hash, display_phone, score) VALUES (?, ?, ?)'
-  ).run(phoneHash, displayPhone, score);
+    'INSERT INTO player_records (phone_hash, display_phone, player_name, score) VALUES (?, ?, ?, ?)'
+  ).run(phoneHash, displayPhone, sanitizedName, score);
 
   return {
     success: true,
@@ -94,7 +97,7 @@ export async function getTopScores(limit: number = 10): Promise<PlayerRecord[]> 
   const db = getDatabase();
   
   const rows = db.prepare(
-    `SELECT id, phone_hash, display_phone, score, created_at, updated_at 
+    `SELECT id, phone_hash, display_phone, player_name, score, created_at, updated_at 
      FROM player_records 
      ORDER BY score DESC 
      LIMIT ?`
@@ -102,6 +105,7 @@ export async function getTopScores(limit: number = 10): Promise<PlayerRecord[]> 
     id: number;
     phone_hash: string;
     display_phone: string;
+    player_name: string;
     score: number;
     created_at: string;
     updated_at: string;
@@ -111,6 +115,7 @@ export async function getTopScores(limit: number = 10): Promise<PlayerRecord[]> 
     id: row.id,
     phoneHash: row.phone_hash,
     displayPhone: row.display_phone,
+    playerName: row.player_name || '',
     score: row.score,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
@@ -134,13 +139,14 @@ export async function getScoreByPhone(phone: string): Promise<PlayerRecord | nul
   const phoneHash = hash(phone);
 
   const row = db.prepare(
-    `SELECT id, phone_hash, display_phone, score, created_at, updated_at 
+    `SELECT id, phone_hash, display_phone, player_name, score, created_at, updated_at 
      FROM player_records 
      WHERE phone_hash = ?`
   ).get(phoneHash) as {
     id: number;
     phone_hash: string;
     display_phone: string;
+    player_name: string;
     score: number;
     created_at: string;
     updated_at: string;
@@ -154,6 +160,7 @@ export async function getScoreByPhone(phone: string): Promise<PlayerRecord | nul
     id: row.id,
     phoneHash: row.phone_hash,
     displayPhone: row.display_phone,
+    playerName: row.player_name || '',
     score: row.score,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
