@@ -1,0 +1,6 @@
+# Frontend assets directory
+# This directory contains:
+# - index.html - Main game HTML
+# - js/ - TypeScript/JavaScript modules
+# - assets/ - Sprite sheets and images
+# - css/ - Stylesheets (if needed)

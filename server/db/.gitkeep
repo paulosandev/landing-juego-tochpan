@@ -1,0 +1,3 @@
+# Database layer
+# - database.ts - SQLite connection setup with WAL mode
+# - schema.ts - Table creation and migrations

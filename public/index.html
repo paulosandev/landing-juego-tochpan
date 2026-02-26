@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tochpan Café - Próximamente</title>
+    
+    <!-- Fuentes de Tochpan -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Cargamos las fuentes estructurales (Sans Serif) -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Cargamos las 3 fuentes decorativas por separado -->
+    <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Just+Me+Again+Down+Here&family=Miniver&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#fef8f3',  // Crema muy claro
+                            beige: '#eae1d7',  // Beige/Arena
+                            dark: '#544540',   // Marrón oscuro
+                        },
+                        neutral: {
+                            gray: '#eceef3',
+                            white: '#ffffff',
+                        },
+                        accent: {
+                            pop: '#FF8C42', 
+                        }
+                    },
+                    fontFamily: {
+                        // Títulos limpios
+                        display: ['"DM Sans"', 'sans-serif'],
+                        // Cuerpo legible
+                        body: ['"Quicksand"', 'sans-serif'],
+                        
+                        // --- Las 3 Fuentes Decorativas ---
+                        // 1. Cedarville Cursive (Estilo firma)
+                        cursive: ['"Cedarville Cursive"', 'cursive'],
+                        // 2. Just Me Again Down Here (Estilo marcador delgado)
+                        marker: ['"Just Me Again Down Here"', 'cursive'],
+                        // 3. Miniver (Estilo retro/vintage)
+                        retro: ['"Miniver"', 'cursive'],
+                    },
+                    borderRadius: {
+                        'brand': '1rem',
+                    }
+                },
+            },
+        }
+    </script>
+
+    <style>
+        body {
+            touch-action: manipulation;
+            -webkit-font-smoothing: antialiased;
+            overscroll-behavior: none; /* Previene rebote en scroll de móvil */
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            background-color: #ffffff;
+            overflow: hidden;
+            border-bottom: 8px solid #eae1d7;
+            touch-action: none; /* CRUCIAL: Desactiva gestos del navegador en el juego */
+        }
+
+        canvas {
+            display: block;
+        }
+        
+        .logo-img {
+            max-height: 120px;
+            width: auto;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Loading indicator styles */
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #eae1d7;
+            border-top-color: #544540;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-brand-light text-brand-dark font-body min-h-screen flex flex-col items-center justify-center p-6 selection:bg-brand-beige selection:text-brand-dark">
+
+    <!-- Header / Logo Placeholder -->
+    <div class="text-center mb-8 w-full max-w-lg">
+        <div class="mb-4 flex justify-center">
+            <!-- Logo real -->
+            <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/fl_preserve_transparency/v1770082255/conejo-saltando-tochpan_i7dudp.jpg?_s=public-apps" alt="Tochpan Café Logo" class="logo-img">
+        </div>
+        
+        <!-- Subtítulo: Usamos la fuente 1 (Marker) -->
+        <p class="font-marker text-4xl md:text-5xl text-brand-dark/90 rotate-[-2deg] mt-4 tracking-wide">
+            Estamos preparando algo delicioso...
+        </p>
+    </div>
+
+    <!-- Game Card -->
+    <div class="w-full max-w-4xl bg-neutral-white rounded-brand shadow-xl overflow-hidden border border-brand-beige ring-4 ring-brand-light relative">
+        
+        <!-- Game Dashboard -->
+        <div class="flex justify-between items-center px-6 py-4 bg-brand-dark text-brand-light">
+            <div class="flex gap-6 font-display font-bold tracking-wide items-baseline">
+                <!-- Puntuación: Usamos la fuente 2 (Retro/Miniver) para los números -->
+                <span class="text-sm md:text-base">PUNTOS: <span id="score" class="font-retro text-xl text-brand-beige ml-1 tracking-wider">00000</span></span>
+                <span class="text-brand-light/60 text-xs md:text-sm">RÉCORD: <span id="highscore" class="font-retro text-lg ml-1 tracking-wider">00000</span></span>
+            </div>
+            
+            <!-- Instrucción PC: Usamos la fuente 3 (Cursive) -->
+            <div class="hidden md:block font-cursive text-xl text-brand-beige tracking-wider opacity-90 transform -rotate-1">
+                Espacio para saltar
+            </div>
+        </div>
+
+        <!-- Canvas Area -->
+        <div id="game-container">
+            <canvas id="gameCanvas"></canvas>
+            
+            <!-- Loading Overlay - Requirement 5.3 -->
+            <div id="loadingScreen" class="absolute inset-0 flex flex-col items-center justify-center z-30 bg-white/90 backdrop-blur-sm">
+                <div class="loading-spinner mb-4"></div>
+                <p class="font-display font-bold text-brand-dark text-lg">Cargando...</p>
+            </div>
+            
+            <!-- Game Over Overlay -->
+            <div id="gameOver" class="absolute inset-0 bg-brand-dark/95 flex flex-col items-center justify-center hidden z-20 backdrop-blur-sm p-4 text-center cursor-pointer">
+                <h2 class="font-display text-4xl font-bold text-brand-light mb-2">¡Ups! Se cayó el café</h2>
+                
+                <!-- Mensaje de ánimo: Fuente Marker -->
+                <p class="font-marker text-5xl text-accent-pop mb-6">Inténtalo otra vez...</p>
+                
+                <!-- Final Score Display -->
+                <p id="finalScoreDisplay" class="font-retro text-3xl text-brand-beige mb-6">Puntuación: <span id="finalScore">0</span></p>
+                
+                <div class="flex flex-col gap-3 w-full max-w-xs">
+                    <button id="retryBtn" class="bg-brand-light text-brand-dark px-10 py-3 rounded-full font-display font-bold uppercase tracking-widest hover:bg-brand-beige transition-transform transform hover:scale-105 active:scale-95 shadow-lg border-2 border-transparent hover:border-brand-dark/10">
+                        Reintentar
+                    </button>
+                    
+                    <button id="leaderboardBtn" class="bg-transparent text-brand-light px-10 py-3 rounded-full font-display font-bold uppercase tracking-widest hover:bg-brand-light/10 transition-transform transform hover:scale-105 active:scale-95 border-2 border-brand-light/50 hover:border-brand-light">
+                        🏆 Ver Ranking
+                    </button>
+                </div>
+            </div>
+
+            <!-- Start Screen Overlay -->
+            <div id="startScreen" class="absolute inset-0 flex flex-col items-center justify-center z-10 bg-white/60 backdrop-blur-[2px] cursor-pointer hidden">
+                <p class="font-display font-bold text-brand-dark text-xl uppercase tracking-widest mb-2 animate-pulse">
+                    Pulsa para empezar
+                </p>
+                <!-- Instrucción extra: Fuente Cursive -->
+                <p class="font-cursive text-2xl opacity-80 text-brand-dark mt-1">Ayuda al conejo a llegar al café</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Text -->
+    <div class="mt-8 text-center opacity-60 font-medium text-sm">
+        <!-- Footer: Fuente Retro (Miniver) -->
+        <p class="font-retro text-2xl tracking-wide">Cultivando momentos, incluso mientras cargamos.</p>
+    </div>
+
+    <!-- Game Module Scripts -->
+    <script type="module">
+        // Import sprite animation modules
+        import { SpriteSheet } from './js/spriteSheet.js';
+        import { AnimationController } from './js/animationController.js';
+        import { SpriteRenderer } from './js/spriteRenderer.js';
+        import { TouchHandler } from './js/touchHandler.js';
+        
+        // Import leaderboard and score modules
+        import { LeaderboardUI } from './js/leaderboardUI.js';
+        import { ScoreApi } from './js/scoreApi.js';
+
+        // DOM Elements
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const highscoreElement = document.getElementById('highscore');
+        const gameOverScreen = document.getElementById('gameOver');
+        const startScreen = document.getElementById('startScreen');
+        const loadingScreen = document.getElementById('loadingScreen');
+        const retryBtn = document.getElementById('retryBtn');
+        const leaderboardBtn = document.getElementById('leaderboardBtn');
+        const finalScoreElement = document.getElementById('finalScore');
+        const gameContainer = document.getElementById('game-container');
+
+        // Brand colors
+        const colors = {
+            dark: '#544540',
+            beige: '#eae1d7',
+            light: '#fef8f3'
+        };
+
+        // Game state
+        let gameActive = false;
+        let gameStarted = false;
+        let score = 0;
+        let highscore = 0;
+        let speed = 5;
+        let frameCount = 0;
+        let obstacles = [];
+        let animationId;
+        let lastFrameTime = 0;
+
+        // Sprite system state
+        let spriteSheet = null;
+        let animationController = null;
+        let spriteRenderer = null;
+        let touchHandler = null;
+        let useSpriteRendering = false; // Fallback flag - Requirement 4.3
+
+        // Leaderboard and score system
+        let leaderboardUI = null;
+        let scoreApi = null;
+
+        // Rabbit state
+        const rabbit = {
+            x: 50,
+            y: 0,
+            width: 45,
+            height: 45,
+            dy: 0,
+            jumpForce: 13,
+            gravity: 0.6,
+            groundY: 0,
+            isJumping: false,
+            emoji: '🐇',
+            squashX: 1.0,
+            squashY: 1.0
+        };
+
+        /**
+         * Initialize sprite system with fallback to emoji
+         * Requirements: 4.2, 4.3
+         */
+        async function initSpriteSystem() {
+            try {
+                // Initialize sprite sheet
+                spriteSheet = new SpriteSheet(45, 45);
+                
+                // Try to load sprite sheet image
+                // For now, we expect it at assets/rabbit-sprites.png
+                await spriteSheet.load('./assets/rabbit-sprites.png');
+                
+                // If loaded successfully, set up sprite rendering
+                animationController = new AnimationController();
+                spriteRenderer = new SpriteRenderer(ctx, spriteSheet);
+                useSpriteRendering = true;
+                
+                console.log('Sprite sheet loaded successfully');
+            } catch (error) {
+                // Fallback to emoji rendering - Requirement 4.3
+                console.log('Sprite sheet not available, using emoji fallback:', error.message);
+                useSpriteRendering = false;
+                
+                // Still initialize animation controller for state management
+                animationController = new AnimationController();
+            }
+        }
+
+        /**
+         * Initialize touch handler
+         * Requirements: 1.1, 1.2, 1.4, 1.5
+         */
+        function initTouchHandler() {
+            touchHandler = new TouchHandler();
+            touchHandler.init(gameContainer);
+            touchHandler.onInput(() => {
+                handleInput();
+            });
+        }
+
+        /**
+         * Handle resize events
+         */
+        function resize() {
+            canvas.width = gameContainer.clientWidth;
+            canvas.height = gameContainer.clientHeight;
+            rabbit.groundY = canvas.height - 25;
+            
+            if (!gameActive) {
+                rabbit.y = rabbit.groundY - rabbit.height;
+                drawScene();
+            }
+        }
+
+        window.addEventListener('resize', resize);
+
+        /**
+         * Handle input (jump or start game)
+         */
+        function handleInput(e) {
+            // Prevent scroll on spacebar
+            if (e && e.type === 'keydown' && e.code === 'Space') {
+                e.preventDefault();
+            }
+
+            if (!gameStarted) {
+                startGame();
+                return;
+            }
+
+            if (gameActive && !rabbit.isJumping) {
+                rabbit.dy = -rabbit.jumpForce;
+                rabbit.isJumping = true;
+                
+                // Update animation state to jumping
+                if (animationController) {
+                    animationController.setState('jumping');
+                }
+                
+                // Apply takeoff squash effect - Requirement 5.1
+                rabbit.squashX = 0.8;
+                rabbit.squashY = 1.2;
+            }
+        }
+
+        // Keyboard input
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' || e.code === 'ArrowUp') handleInput(e);
+        });
+
+        // Mouse input on canvas (backup for touch handler)
+        canvas.addEventListener('mousedown', handleInput);
+
+        // Start screen click handler
+        startScreen.addEventListener('click', startGame);
+        startScreen.addEventListener('touchstart', (e) => {
+            if (e.cancelable) e.preventDefault();
+            startGame();
+        }, { passive: false });
+
+        // Game over screen touch handler
+        gameOverScreen.addEventListener('touchstart', (e) => {
+            if (e.target !== retryBtn) {
+                if (e.cancelable) e.preventDefault();
+                resetGame();
+            }
+        }, { passive: false });
+
+        // Retry button handlers
+        retryBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetGame();
+        });
+        retryBtn.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            resetGame();
+        }, { passive: false });
+
+        // Leaderboard button handlers
+        leaderboardBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showLeaderboard();
+        });
+        leaderboardBtn.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            showLeaderboard();
+        }, { passive: false });
+
+        /**
+         * Create obstacle
+         */
+        function createObstacle() {
+            const types = [
+                { emoji: '☕', w: 35, h: 35, offset: 0 },
+                { emoji: '🥤', w: 30, h: 40, offset: -5 },
+                { emoji: '🍵', w: 40, h: 30, offset: 5 },
+                { emoji: '🍰', w: 35, h: 35, offset: 0 },
+                { emoji: '🍩', w: 35, h: 35, offset: 0 },
+                { emoji: '🥐', w: 40, h: 30, offset: 5 }
+            ];
+            const type = types[Math.floor(Math.random() * types.length)];
+            
+            obstacles.push({
+                x: canvas.width + 50,
+                y: rabbit.groundY - type.h + (type.offset || 0),
+                width: type.w,
+                height: type.h,
+                emoji: type.emoji
+            });
+        }
+
+        /**
+         * Start the game
+         */
+        function startGame() {
+            if (gameStarted) return;
+            gameStarted = true;
+            startScreen.classList.add('hidden');
+            resetGame();
+        }
+
+        /**
+         * Reset game state
+         */
+        function resetGame() {
+            score = 0;
+            speed = 5.5;
+            obstacles = [];
+            gameActive = true;
+            rabbit.y = rabbit.groundY - rabbit.height;
+            rabbit.dy = 0;
+            rabbit.isJumping = false;
+            rabbit.squashX = 1.0;
+            rabbit.squashY = 1.0;
+            gameOverScreen.classList.add('hidden');
+            
+            // Reset animation controller
+            if (animationController) {
+                animationController.setState('running');
+            }
+            
+            // Reset touch handler debounce
+            if (touchHandler) {
+                touchHandler.resetDebounce();
+            }
+            
+            if (animationId) cancelAnimationFrame(animationId);
+            lastFrameTime = performance.now();
+            update();
+        }
+
+        /**
+         * Draw static scene (when game is not active)
+         */
+        function drawScene() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw ground
+            ctx.beginPath();
+            ctx.moveTo(0, rabbit.groundY);
+            ctx.lineTo(canvas.width, rabbit.groundY);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = colors.beige;
+            ctx.stroke();
+
+            // Draw rabbit (emoji fallback)
+            drawRabbit();
+        }
+
+        /**
+         * Draw rabbit with sprite or emoji fallback
+         * Requirements: 4.1, 4.3, 4.4, 4.5
+         */
+        function drawRabbit() {
+            const centerX = rabbit.x + rabbit.width / 2;
+            const centerY = rabbit.y + rabbit.height / 2;
+
+            if (useSpriteRendering && spriteRenderer && animationController) {
+                // Use sprite rendering
+                const frameIndex = animationController.getCurrentFrameIndex();
+                
+                if (rabbit.squashX !== 1.0 || rabbit.squashY !== 1.0) {
+                    // Draw with squash effect
+                    spriteRenderer.drawWithSquash(
+                        frameIndex,
+                        centerX,
+                        rabbit.y + rabbit.height, // Bottom-aligned for squash
+                        rabbit.squashX,
+                        rabbit.squashY
+                    );
+                } else {
+                    // Normal sprite draw
+                    spriteRenderer.drawSprite(frameIndex, centerX, centerY);
+                }
+            } else {
+                // Emoji fallback - Requirement 4.3
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.scale(-rabbit.squashX, rabbit.squashY); // Flip horizontally to face right
+                
+                ctx.font = '45px "Segoe UI Emoji", Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(rabbit.emoji, 0, 5);
+                
+                ctx.restore();
+            }
+        }
+
+        /**
+         * Main game update loop
+         * Requirement 6.1: Use requestAnimationFrame
+         */
+        function update(currentTime) {
+            if (!gameActive) return;
+
+            // Calculate delta time for frame-independent animation
+            const deltaTime = currentTime - lastFrameTime;
+            lastFrameTime = currentTime;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw ground
+            ctx.beginPath();
+            ctx.moveTo(0, rabbit.groundY);
+            ctx.lineTo(canvas.width, rabbit.groundY);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = colors.beige;
+            ctx.stroke();
+
+            // Physics
+            rabbit.dy += rabbit.gravity;
+            rabbit.y += rabbit.dy;
+
+            // Ground collision
+            if (rabbit.y > rabbit.groundY - rabbit.height) {
+                rabbit.y = rabbit.groundY - rabbit.height;
+                rabbit.dy = 0;
+                
+                // Landing transition
+                if (rabbit.isJumping) {
+                    rabbit.isJumping = false;
+                    
+                    // Apply landing squash effect - Requirement 5.2
+                    rabbit.squashX = 1.2;
+                    rabbit.squashY = 0.8;
+                    
+                    // Update animation state to landing then running
+                    if (animationController) {
+                        animationController.setState('landing');
+                    }
+                    
+                    // Reset touch handler debounce on landing
+                    if (touchHandler) {
+                        touchHandler.resetDebounce();
+                    }
+                }
+            }
+
+            // Gradually restore squash to normal
+            rabbit.squashX += (1.0 - rabbit.squashX) * 0.2;
+            rabbit.squashY += (1.0 - rabbit.squashY) * 0.2;
+
+            // Update animation controller
+            if (animationController) {
+                const gameSpeedMultiplier = speed / 5.5; // Normalize to base speed
+                animationController.update(deltaTime, gameSpeedMultiplier);
+            }
+
+            // Draw rabbit
+            drawRabbit();
+
+            // Obstacles
+            let minFrames = Math.floor(110 - speed * 4);
+            if (minFrames < 45) minFrames = 45;
+            
+            if (frameCount % minFrames === 0 && Math.random() > 0.25) {
+                createObstacle();
+            }
+
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                const obs = obstacles[i];
+                obs.x -= speed;
+
+                ctx.font = '35px "Segoe UI Emoji", Arial';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(obs.emoji, obs.x, obs.y + obs.height + 5);
+
+                // Collision detection - AABB with smaller padding for better accuracy
+                const padding = 8; // Reduced from 14 for more accurate collisions
+                const rabbitLeft = rabbit.x + padding;
+                const rabbitRight = rabbit.x + rabbit.width - padding;
+                const rabbitTop = rabbit.y + padding;
+                const rabbitBottom = rabbit.y + rabbit.height - padding;
+                
+                const obsLeft = obs.x + 5;
+                const obsRight = obs.x + obs.width - 5;
+                const obsTop = obs.y + 5;
+                const obsBottom = obs.y + obs.height - 5;
+                
+                // Check for overlap
+                if (rabbitRight > obsLeft && 
+                    rabbitLeft < obsRight && 
+                    rabbitBottom > obsTop && 
+                    rabbitTop < obsBottom) {
+                    endGame();
+                    return; // Stop the game loop immediately
+                }
+
+                if (obs.x + obs.width < -50) {
+                    obstacles.splice(i, 1);
+                }
+            }
+
+            // Score
+            score++;
+            if (score % 5 === 0) speed += 0.001;
+            scoreElement.innerText = Math.floor(score / 5).toString().padStart(5, '0');
+
+            frameCount++;
+            animationId = requestAnimationFrame(update);
+        }
+
+        /**
+         * End the game
+         * Requirements: 7.1, 8.3, 8.4, 8.5
+         */
+        async function endGame() {
+            gameActive = false;
+            const finalScore = Math.floor(score / 5);
+            const isNewHighScore = finalScore > highscore;
+            
+            // Update highscore display
+            if (isNewHighScore) {
+                highscore = finalScore;
+                highscoreElement.innerText = highscore.toString().padStart(5, '0');
+            }
+            
+            // Update final score display
+            finalScoreElement.innerText = finalScore.toLocaleString();
+            
+            // Show game over screen
+            gameOverScreen.classList.remove('hidden');
+            
+            // If new high score, prompt for phone number to save score
+            if (isNewHighScore && scoreApi) {
+                // Small delay to let game over screen appear first
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                const result = await scoreApi.promptAndSubmitScore(finalScore);
+                
+                // After submission (or skip), show leaderboard with player highlighted
+                if (result.success || result.savedLocally) {
+                    await showLeaderboardWithHighlight();
+                }
+            }
+        }
+
+        /**
+         * Show leaderboard and highlight current player's entry
+         * Requirements: 8.3, 8.4, 8.5
+         */
+        async function showLeaderboardWithHighlight() {
+            if (!leaderboardUI || !scoreApi) return;
+            
+            try {
+                // Fetch top scores with current player marked
+                const entries = await scoreApi.getTopScores();
+                
+                // Update and show leaderboard
+                leaderboardUI.update(entries);
+                leaderboardUI.show();
+            } catch (error) {
+                console.error('Failed to show leaderboard:', error);
+            }
+        }
+
+        /**
+         * Show leaderboard (from button click)
+         * Requirement: 8.3
+         */
+        async function showLeaderboard() {
+            if (!leaderboardUI || !scoreApi) return;
+            
+            try {
+                // Fetch top scores
+                const entries = await scoreApi.getTopScores();
+                
+                // Update and show leaderboard
+                leaderboardUI.update(entries);
+                leaderboardUI.show();
+            } catch (error) {
+                console.error('Failed to show leaderboard:', error);
+            }
+        }
+
+        /**
+         * Initialize the game
+         * Requirements: 4.2, 5.3, 8.1, 8.3
+         */
+        async function init() {
+            // Show loading screen
+            loadingScreen.classList.remove('hidden');
+            startScreen.classList.add('hidden');
+            
+            // Resize canvas
+            resize();
+            
+            // Initialize sprite system (with fallback)
+            await initSpriteSystem();
+            
+            // Initialize touch handler
+            initTouchHandler();
+            
+            // Initialize leaderboard and score API
+            leaderboardUI = new LeaderboardUI();
+            scoreApi = new ScoreApi();
+            
+            // Hide loading screen, show start screen
+            loadingScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+            
+            // Draw initial scene
+            drawScene();
+        }
+
+        // Start initialization when DOM is ready
+        window.onload = init;
+    </script>
+</body>
+</html>

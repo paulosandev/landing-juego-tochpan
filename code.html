@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Tochpan Café - Minimalist Home</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        // Tus colores personalizados
+                        brand: {
+                            light: '#fef8f3',
+                            beige: '#eae1d7',
+                            dark: '#544540',
+                        },
+                        neutral: {
+                            gray: '#eceef3',
+                            white: '#ffffff',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Quicksand"', 'sans-serif'],
+                        display: ['"Quicksand"', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'brand': '1.5rem',
+                    }
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        html { scroll-behavior: smooth; }
+        body { @apply bg-brand-light text-brand-dark antialiased; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #eae1d7; border-radius: 4px; }
+
+        .text-outline-pill {
+            @apply border border-brand-dark rounded-full px-6 py-2 inline-flex items-center gap-2 transition-all duration-300;
+        }
+        .text-outline-pill:hover {
+            @apply bg-brand-dark text-brand-light;
+        }
+    </style>
+</head>
+<body class="selection:bg-brand-beige selection:text-brand-dark">
+
+<header class="w-full bg-brand-light/90 backdrop-blur-md py-4 border-b border-brand-beige sticky top-0 z-50">
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-10">
+        <div class="grid grid-cols-2 lg:grid-cols-3 items-center">
+            <nav class="hidden lg:flex items-center gap-x-6 text-[10px] font-bold uppercase tracking-[0.2em]">
+                <a class="hover:opacity-60 transition-opacity" href="#ordena">ORDENA AHORA</a>
+                <a class="hover:opacity-60 transition-opacity" href="#merch">MERCH</a>
+                <a class="hover:opacity-60 transition-opacity" href="#sobre">NOSOTROS</a>
+            </nav>
+
+            <div class="flex justify-start lg:justify-center">
+                <a href="#">
+                    <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/fl_preserve_transparency/v1770084269/conejo-tochpan-cafe_omsdaq.jpg?_s=public-apps" 
+                         alt="Tochpan Logo" class="h-14 md:h-16 w-auto object-contain">
+                </a>
+            </div>
+
+            <nav class="hidden lg:flex items-center justify-end gap-x-6 text-[10px] font-bold uppercase tracking-[0.2em]">
+                <a class="hover:opacity-60 transition-opacity" href="#factura">FACTURA</a>
+                <a class="hover:opacity-60 transition-opacity" href="#">INGRESAR</a>
+                <a class="hover:opacity-60 flex items-center" href="#">
+                    <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+                </a>
+            </nav>
+
+            <div class="lg:hidden flex justify-end">
+                <button class="material-symbols-outlined text-2xl">menu</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="max-w-[1800px] mx-auto px-4 pt-6">
+        <div class="relative h-[70vh] md:h-[85vh] overflow-hidden rounded-brand bg-brand-beige group">
+            <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0">
+                <source src="https://cdn.shopify.com/videos/c/vp/c8d31ad3915b4930b599ff494663ddcb/c8d31ad3915b4930b599ff494663ddcb.HD-720p-2.1Mbps-62376857.mp4" type="video/mp4">
+            </video>
+            <div class="relative z-10 h-full flex flex-col justify-end p-8 md:p-16 bg-black/10">
+                <h1 class="text-6xl md:text-9xl font-bold text-brand-light leading-[0.85] tracking-tighter">
+                    TOCHPAN<br/>CAFÉ.
+                </h1>
+                <p class="text-brand-light mt-6 text-lg font-medium max-w-md opacity-90">
+                    Un rincón inspirado en el río, los viajes y el aroma del grano recién molido.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-screen-xl mx-auto px-6 py-24 md:py-32" id="ordena">
+        <div class="flex justify-between items-end mb-16 border-b border-brand-beige pb-6">
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight uppercase">ORDENA Y PASA</h2>
+            <a class="hidden md:inline-flex text-outline-pill text-xs font-bold uppercase" href="#">
+                Ver Menú <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12">
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] w-full overflow-hidden mb-4 bg-neutral-gray rounded-brand">
+                    <img alt="Latte" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=800&auto=format&fit=crop"/>
+                </div>
+                <h3 class="text-sm font-bold uppercase">Latte de la Casa</h3>
+                <p class="text-xs text-brand-dark/60 mt-1">Cremoso + Dulce</p>
+            </div>
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] w-full overflow-hidden mb-4 bg-neutral-gray rounded-brand">
+                    <img alt="Grano" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://images.unsplash.com/photo-1589395937968-d007e06a7726?q=80&w=800&auto=format&fit=crop"/>
+                </div>
+                <h3 class="text-sm font-bold uppercase">Espresso Obscuro</h3>
+                <p class="text-xs text-brand-dark/60 mt-1">Grano 250g</p>
+            </div>
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] w-full overflow-hidden mb-4 bg-neutral-gray rounded-brand">
+                    <img alt="Cold Brew" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://images.unsplash.com/photo-1517701604599-bb29b5c73553?q=80&w=800&auto=format&fit=crop"/>
+                </div>
+                <h3 class="text-sm font-bold uppercase">Cold Brew</h3>
+                <p class="text-xs text-brand-dark/60 mt-1">Refrescante + Intenso</p>
+            </div>
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] w-full overflow-hidden mb-4 bg-neutral-gray rounded-brand">
+                    <img alt="Comida" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://images.unsplash.com/photo-1550950158-d0d960dff51b?q=80&w=800&auto=format&fit=crop"/>
+                </div>
+                <h3 class="text-sm font-bold uppercase">Hamburguesa Clásica</h3>
+                <p class="text-xs text-brand-dark/60 mt-1">Con papas</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-neutral-gray py-24 md:py-32" id="sobre">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-xs font-bold tracking-[0.4em] uppercase mb-8 text-brand-dark/40">Nuestra Historia</h2>
+            <h3 class="text-3xl md:text-5xl font-bold italic mb-12 leading-tight">
+                "Más que una taza de café"
+            </h3>
+            <div class="space-y-6 text-lg font-medium leading-relaxed text-brand-dark/80">
+                <p>
+                    Soy un conejo tuxpeño, mi nombre viene del náhuatl que significa lugar de conejos. 
+                    Un viajero que le gusta aprender y probar sabores diferentes para traerlos a este rincón.
+                </p>
+                <p>
+                    Te espero con una vista bonita frente a mi río favorito, un matcha para pasar el día y un postre para endulzar la vida.
+                </p>
+            </div>
+            <div class="mt-12 flex justify-center">
+                <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/fl_preserve_transparency/v1770084269/conejo-tochpan-cafe_omsdaq.jpg?_s=public-apps" 
+                     class="h-24 w-auto grayscale opacity-30" alt="Icono conejo">
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-screen-2xl mx-auto px-6 py-24">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="aspect-square overflow-hidden rounded-brand">
+                <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+            </div>
+            <div class="aspect-square overflow-hidden rounded-brand md:mt-12">
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+            </div>
+            <div class="aspect-square overflow-hidden rounded-brand">
+                <img src="https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+            </div>
+            <div class="aspect-square overflow-hidden rounded-brand md:mt-12">
+                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white border-t border-brand-beige pt-20 pb-10">
+        <div class="max-w-screen-xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+            <div id="factura">
+                <h5 class="font-bold text-xs uppercase tracking-widest mb-6">Facturación</h5>
+                <p class="text-sm text-brand-dark/60 mb-4">Accede con tu ticket para generar tu CFDI.</p>
+                <a class="text-sm font-bold border-b border-brand-dark pb-1" href="#">Ir al portal</a>
+            </div>
+            <div>
+                <h5 class="font-bold text-xs uppercase tracking-widest mb-6">Social</h5>
+                <a class="text-xl font-bold hover:opacity-60 transition-opacity block mb-2" href="#">@tochpancafe</a>
+                <p class="text-xs text-brand-dark/50">Síguenos en Instagram para novedades.</p>
+            </div>
+            <div>
+                <h5 class="font-bold text-xs uppercase tracking-widest mb-6">Ubicación</h5>
+                <p class="text-sm text-brand-dark/60">Boulevard Maples Arce,<br/>Tuxpan, Veracruz.</p>
+            </div>
+            <div>
+                <h5 class="font-bold text-xs uppercase tracking-widest mb-6">Horario</h5>
+                <p class="text-sm font-bold">Lunes a Domingo</p>
+                <p class="text-sm text-brand-dark/60">8:30 am — 9:30 pm</p>
+            </div>
+        </div>
+        <div class="max-w-screen-xl mx-auto px-6 pt-10 border-t border-brand-beige flex flex-col md:flex-row justify-between items-center text-[10px] font-bold uppercase tracking-widest text-brand-dark/40">
+            <p>© 2026 TOCHPAN CAFÉ S.A. DE C.V.</p>
+            <p class="mt-2 md:mt-0">Diseño Minimalista Coreano</p>
+        </div>
+    </footer>
+</main>
+
+</body>
+</html>

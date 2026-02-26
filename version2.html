@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tochpan Café</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#fef8f3',
+                            beige: '#eae1d7',
+                            dark: '#544540',
+                        },
+                        neutral: {
+                            gray: '#eceef3',
+                            white: '#ffffff',
+                        },
+                        accent: {
+                            blue: '#1d4ed8',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Quicksand"', 'sans-serif'], 
+                    },
+                    borderRadius: {
+                        'brand': '1rem',
+                    }
+                },
+            },
+        }
+    </script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Quicksand', sans-serif; }
+        header { transition: all 0.3s ease-in-out; }
+    </style>
+</head>
+<body class="bg-brand-light text-brand-dark antialiased selection:bg-brand-beige selection:text-brand-dark">
+
+    <section class="relative mx-4 mt-4 h-[100vh] overflow-hidden rounded-brand bg-brand-beige group">
+        <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-90">
+            <source src="https://cdn.shopify.com/videos/c/vp/c8d31ad3915b4930b599ff494663ddcb/c8d31ad3915b4930b599ff494663ddcb.HD-720p-2.1Mbps-62376857.mp4" type="video/mp4">
+        </video>
+        
+        <div class="relative z-20 h-full flex flex-col justify-start p-8 md:p-12">
+            <h1 class="font-bold text-6xl md:text-8xl text-brand-light drop-shadow-lg leading-none tracking-tight">
+                Tochpan <br> Café.
+            </h1>
+        </div>
+
+        <a href="#contenido-principal" class="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 text-brand-light animate-bounce cursor-pointer hover:opacity-80 transition-opacity p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10 drop-shadow-md">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+        </a>
+    </section>
+
+    <header class="sticky top-0 z-50 mx-4 mt-0 mb-10 border-b border-brand-beige bg-brand-light/95 backdrop-blur-sm rounded-b-brand shadow-sm">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            
+            <a href="#" class="block hover:opacity-80 transition-opacity">
+                <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/fl_preserve_transparency/v1770084269/conejo-tochpan-cafe_omsdaq.jpg?_s=public-apps" alt="Tochpan Logo" class="h-20 w-auto object-contain">
+            </a>
+
+            <nav class="hidden lg:block">
+                <ul class="flex gap-6 font-semibold text-sm md:text-base tracking-wide text-brand-dark items-center">
+                    <li><a href="#" class="hover:text-brand-beige hover:bg-brand-dark px-3 py-1 rounded-full transition-all">Sobre tochpan</a></li>
+                    <li><a href="#" class="hover:text-brand-beige hover:bg-brand-dark px-3 py-1 rounded-full transition-all">Merch</a></li>
+                    <li><a href="#" class="hover:text-brand-beige hover:bg-brand-dark px-3 py-1 rounded-full transition-all">Ordena ahora</a></li>
+                    <li><a href="#" class="hover:text-brand-beige hover:bg-brand-dark px-3 py-1 rounded-full transition-all">Postúlate</a></li>
+                    <li><a href="#" class="hover:text-brand-beige hover:bg-brand-dark px-3 py-1 rounded-full transition-all">Factura</a></li>
+                </ul>
+            </nav>
+
+            <div class="flex gap-6 font-semibold text-sm md:text-base items-center">
+                <a href="#" class="hover:opacity-60">Yo</a>
+                <a href="#" class="hover:opacity-60">Carrito (0)</a>
+            </div>
+        </div>
+    </header>
+
+    <main id="contenido-principal" class="container mx-auto px-6 mb-24 scroll-mt-32">
+        
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-medium text-brand-dark tracking-tight">Nuestros Favoritos</h2>
+            <p class="text-brand-dark/70 mt-4 max-w-2xl mx-auto">Bebidas preparadas al momento con ingredientes seleccionados.</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+            
+            <div class="group cursor-pointer bg-white rounded-[2rem] p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+                <div class="w-full aspect-[4/5] flex items-center justify-center mb-4 relative">
+                    <div class="absolute inset-6 bg-brand-beige/40 rounded-full blur-2xl z-0 group-hover:bg-brand-beige/60 transition-colors"></div>
+                    <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/v1770101327/latee_p8ote0.png" class="relative z-10 w-full h-full object-contain drop-shadow-lg group-hover:scale-110 group-hover:drop-shadow-xl transition-all duration-500" alt="Latte">
+                </div>
+                <h3 class="text-lg font-bold text-brand-dark tracking-tight leading-tight">Latte</h3>
+                <p class="text-sm text-brand-dark/60 font-medium mt-2">Clásico y cremoso</p>
+            </div>
+
+            <div class="group cursor-pointer bg-white rounded-[2rem] p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+                <div class="w-full aspect-[4/5] flex items-center justify-center mb-4 relative">
+                    <div class="absolute inset-6 bg-green-100/50 rounded-full blur-2xl z-0 group-hover:bg-green-200/50 transition-colors"></div>
+                    <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/v1770101328/matcha_organico_ceremonial_rqjuey.png" class="relative z-10 w-full h-full object-contain drop-shadow-lg group-hover:scale-110 group-hover:drop-shadow-xl transition-all duration-500" alt="Matcha Latte">
+                </div>
+                <h3 class="text-lg font-bold text-brand-dark tracking-tight leading-tight">Matcha Latte</h3>
+                <p class="text-sm text-brand-dark/60 font-medium mt-2">Orgánico ceremonial</p>
+            </div>
+
+            <div class="group cursor-pointer bg-white rounded-[2rem] p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+                <div class="w-full aspect-[4/5] flex items-center justify-center mb-4 relative">
+                    <div class="absolute inset-6 bg-orange-100/40 rounded-full blur-2xl z-0 group-hover:bg-orange-200/40 transition-colors"></div>
+                    <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/v1770101307/americano_ginger_p4h3kd.png" class="relative z-10 w-full h-full object-contain drop-shadow-lg group-hover:scale-110 group-hover:drop-shadow-xl transition-all duration-500" alt="Americano Ginger">
+                </div>
+                <h3 class="text-lg font-bold text-brand-dark tracking-tight leading-tight">Americano Ginger</h3>
+                <p class="text-sm text-brand-dark/60 font-medium mt-2">Con toque de jengibre</p>
+            </div>
+
+            <div class="group cursor-pointer bg-white rounded-[2rem] p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+                <div class="w-full aspect-[4/5] flex items-center justify-center mb-4 relative">
+                    <div class="absolute inset-6 bg-blue-50/50 rounded-full blur-2xl z-0 group-hover:bg-blue-100/50 transition-colors"></div>
+                    <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/v1770101308/americano_tonico_i06yzv.png" class="relative z-10 w-full h-full object-contain drop-shadow-lg group-hover:scale-110 group-hover:drop-shadow-xl transition-all duration-500" alt="Americano Tónico">
+                </div>
+                <h3 class="text-lg font-bold text-brand-dark tracking-tight leading-tight">Americano Tónico</h3>
+                <p class="text-sm text-brand-dark/60 font-medium mt-2">Refrescante y cítrico</p>
+            </div>
+
+            <div class="group cursor-pointer bg-white rounded-[2rem] p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+                <div class="w-full aspect-[4/5] flex items-center justify-center mb-4 relative">
+                     <div class="absolute inset-6 bg-brand-beige/40 rounded-full blur-2xl z-0 group-hover:bg-brand-beige/60 transition-colors"></div>
+                    <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/v1770101319/coldbrew_wkx1pb.png" class="relative z-10 w-full h-full object-contain drop-shadow-lg group-hover:scale-110 group-hover:drop-shadow-xl transition-all duration-500" alt="Cold Brew">
+                </div>
+                <h3 class="text-lg font-bold text-brand-dark tracking-tight leading-tight">Cold Brew</h3>
+                <p class="text-sm text-brand-dark/60 font-medium mt-2">Extracción lenta en frío</p>
+            </div>
+
+             <div class="group cursor-pointer bg-white rounded-[2rem] p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+                <div class="w-full aspect-[4/5] flex items-center justify-center mb-4 relative">
+                    <div class="absolute inset-6 bg-red-100/40 rounded-full blur-2xl z-0 group-hover:bg-red-200/40 transition-colors"></div>
+                    <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/v1770101328/tisana_frutos_ei7dyh.png" class="relative z-10 w-full h-full object-contain drop-shadow-lg group-hover:scale-110 group-hover:drop-shadow-xl transition-all duration-500" alt="Tisana">
+                </div>
+                <h3 class="text-lg font-bold text-brand-dark tracking-tight leading-tight">Tisana Frutos</h3>
+                <p class="text-sm text-brand-dark/60 font-medium mt-2">Infusión frutal</p>
+            </div>
+        </div>
+
+    </main>
+
+    <section class="container mx-auto px-6 mb-24">
+        
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-medium text-brand-dark tracking-tight">Merch Oficial</h2>
+            <p class="text-brand-dark/70 mt-4 max-w-2xl mx-auto">Lleva un pedacito de Tochpan contigo.</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            
+            <div class="group cursor-pointer flex flex-col items-center text-center">
+                <div class="w-full aspect-square overflow-hidden rounded-[2rem] mb-4 relative">
+                    <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/v1770109030/1_ucuhrq.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out" alt="Tote bags">
+                    <div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-300"></div>
+                </div>
+                <h3 class="text-lg font-bold text-brand-dark group-hover:text-brand-dark/80 transition-colors">Tote Bag Tochpan</h3>
+                <p class="text-sm text-brand-dark/60 mt-1">Algodón 100% resistente</p>
+            </div>
+
+            <div class="group cursor-pointer flex flex-col items-center text-center">
+                <div class="w-full aspect-square overflow-hidden rounded-[2rem] mb-4 relative">
+                    <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/v1770109030/2_yrasxh.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out" alt="Taza Capuccino">
+                    <div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-300"></div>
+                </div>
+                <h3 class="text-lg font-bold text-brand-dark group-hover:text-brand-dark/80 transition-colors">Taza Capuccino</h3>
+                <p class="text-sm text-brand-dark/60 mt-1">Cerámica alta temperatura</p>
+            </div>
+
+            <div class="group cursor-pointer flex flex-col items-center text-center">
+                <div class="w-full aspect-square overflow-hidden rounded-[2rem] mb-4 relative">
+                    <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/v1770109030/3_swm1ym.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out" alt="Café en grano">
+                    <div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-300"></div>
+                </div>
+                <h3 class="text-lg font-bold text-brand-dark group-hover:text-brand-dark/80 transition-colors">Café de la Casa</h3>
+                <p class="text-sm text-brand-dark/60 mt-1">Tueste medio / 250g</p>
+            </div>
+
+            <div class="group cursor-pointer flex flex-col items-center text-center">
+                <div class="w-full aspect-square overflow-hidden rounded-[2rem] mb-4 relative">
+                    <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/v1770109030/4_xqlcra.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out" alt="Llavero tochpan">
+                    <div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-300"></div>
+                </div>
+                <h3 class="text-lg font-bold text-brand-dark group-hover:text-brand-dark/80 transition-colors">Llavero Conejo</h3>
+                <p class="text-sm text-brand-dark/60 mt-1">Edición especial</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="mb-24 px-6 bg-brand-light">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                <div class="aspect-square overflow-hidden bg-brand-beige rounded-brand">
+                    <img src="https://scontent.fver1-1.fna.fbcdn.net/v/t51.82787-15/571565317_18033175697740686_4611944010021211623_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_ohc=eAxEWz2qK3cQ7kNvwF97yso&_nc_oc=AdkgaJzO25U1AUgQUJX-ZwmjnfwzGF9UUGldhWt63QDW7ci_ArrPdDjm774Hl-2UYLqJ5UG6DFppJ7AXco5749Ds&_nc_zt=23&_nc_ht=scontent.fver1-1.fna&_nc_gid=2qZg3DJVexfDDqjw5zA9Yw&oh=00_AfsvcZjsNk0xgYmpWmYpzDl57V4EXBTkvvyOcCrasuDdKg&oe=69877E59" alt="Ambiente café" class="w-full h-full object-cover">
+                </div>
+                <div class="aspect-square overflow-hidden bg-brand-beige rounded-brand">
+                    <img src="https://scontent.fver1-1.fna.fbcdn.net/v/t51.75761-15/503046569_18014907575740686_3160316161979875746_n.jpg?stp=dst-jpegr_tt6&_nc_cat=108&ccb=1-7&_nc_sid=127cfc&_nc_ohc=lQozvsTtEC8Q7kNvwHaob_1&_nc_oc=Adl0smSGa6C6QbirTZQKKpvphq_vDmMSADo2_tjcKp_t5i6nYg2N4iAv84j5ama3JqhTcDZRmFgc-Q6UO2_m7N-a&_nc_zt=23&se=-1&_nc_ht=scontent.fver1-1.fna&_nc_gid=65b3TX1170rRHGbTB_UC4g&oh=00_AfsQL8Dj5L2lwN0AJpxX3U6HNaWEgIEpbttftoF-hI73Kg&oe=6987A7E0" alt="Café helado" class="w-full h-full object-cover">
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold italic text-brand-dark mb-6">Más que una taza de café</h2>
+                
+                <div class="text-sm md:text-base leading-relaxed text-brand-dark/90 font-medium space-y-4">
+                    <p>
+                        Soy un conejo tuxpeño, mi nombre viene del náhuatl que significa lugar de conejos. 
+                        Soy un conejo viajero que le gusta aprender cosas nuevas, conocer lugares nuevos y probar sabores diferentes. 
+                        Me gusta traerte todo eso que aprendo, conozco y pruebo a nuestro rincón de café.
+                    </p>
+                    <p>
+                        Te espero con una vista bonita frente a mi río favorito, que mucho carga pero mucho da. 
+                        Un café o un matcha para pasar el día más bonito y un postre para endulzar un poco más la vida.
+                    </p>
+                    <p>
+                        Deseo que cuando vengas, lo sientas con el corazón que lo entrego. Gracias por visitarme entre el olor del café y lo dulce de mis postres, y también mi comida rica.
+                    </p>
+                </div>
+
+                <div class="mt-8">
+                    <a href="#" class="inline-block border-b-2 border-brand-dark text-brand-dark font-bold hover:text-brand-dark/70 hover:border-brand-dark/50 transition-colors pb-1">
+                        Sobre tochpan
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-brand-light relative">
+        <div class="container mx-auto px-6">
+            
+            <div class="flex justify-between items-end mb-12">
+                 <div>
+                    <h2 class="text-4xl md:text-5xl font-medium text-brand-dark tracking-tight uppercase">@tochpancafe</h2>
+                    <p class="text-brand-dark/60 mt-2 font-medium">Síguenos en Instagram</p>
+                 </div>
+                 <a href="https://instagram.com/tochpancafe" target="_blank" class="hidden md:inline-flex items-center gap-2 bg-brand-dark text-brand-light px-6 py-3 rounded-full font-bold text-sm hover:opacity-90 transition-opacity">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    Seguir
+                 </a>
+            </div>
+
+            <div id="instagram-feed" class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-16">
+                
+                <a href="https://instagram.com/tochpancafe" target="_blank" class="relative aspect-square overflow-hidden rounded-[2rem] bg-neutral-gray group cursor-pointer block">
+                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Instagram Post">
+                    <div class="absolute inset-0 bg-brand-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <svg class="text-white w-8 h-8 drop-shadow-md" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </div>
+                </a>
+                
+                <a href="https://instagram.com/tochpancafe" target="_blank" class="relative aspect-square overflow-hidden rounded-[2rem] bg-neutral-gray group cursor-pointer block">
+                    <img src="https://images.unsplash.com/photo-1498804103079-a6351b050096?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Instagram Post">
+                     <div class="absolute inset-0 bg-brand-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <svg class="text-white w-8 h-8 drop-shadow-md" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </div>
+                </a>
+                
+                <a href="https://instagram.com/tochpancafe" target="_blank" class="relative aspect-square overflow-hidden rounded-[2rem] bg-neutral-gray group cursor-pointer block">
+                    <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Instagram Post">
+                     <div class="absolute inset-0 bg-brand-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <svg class="text-white w-8 h-8 drop-shadow-md" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </div>
+                </a>
+                
+                <a href="https://instagram.com/tochpancafe" target="_blank" class="relative aspect-square overflow-hidden rounded-[2rem] bg-neutral-gray group cursor-pointer block">
+                    <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Instagram Post">
+                     <div class="absolute inset-0 bg-brand-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <svg class="text-white w-8 h-8 drop-shadow-md" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </div>
+                </a>
+                
+                <a href="https://instagram.com/tochpancafe" target="_blank" class="relative aspect-square overflow-hidden rounded-[2rem] bg-neutral-gray group cursor-pointer block">
+                    <img src="https://images.unsplash.com/photo-1577968897966-3d4325b36b61?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Instagram Post">
+                     <div class="absolute inset-0 bg-brand-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <svg class="text-white w-8 h-8 drop-shadow-md" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </div>
+                </a>
+                 
+                <a href="https://instagram.com/tochpancafe" target="_blank" class="relative aspect-square overflow-hidden rounded-[2rem] bg-neutral-gray group cursor-pointer block">
+                    <img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Instagram Post">
+                     <div class="absolute inset-0 bg-brand-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <svg class="text-white w-8 h-8 drop-shadow-md" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </div>
+                </a>
+            </div>
+
+            <div class="max-w-2xl mx-auto text-center space-y-12">
+                
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-brand-dark/40 mb-4">Ubicación</h3>
+                    <h4 class="text-2xl font-bold text-brand-dark mb-2">Tochpan Café</h4>
+                    <p class="text-brand-dark/80 font-medium">Blvd. Jesús Reyes Heroles 65-Int.#B, Centro, 92800 Túxpam de Rodríguez Cano.<br>Veracruz, México</p>
+                    <a href="https://maps.app.goo.gl/px9kiJ2NJ5YH6fqj6" class="inline-block mt-4 text-xs font-bold border-b border-brand-dark/20 pb-1 hover:border-brand-dark transition-colors">Ver en Google Maps</a>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-brand-dark/40 mb-4">Horario</h3>
+                    <p class="text-brand-dark/80 font-medium">Lunes a Domingo<br>8:30 am — 9:30 pm</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-brand-light pt-20 pb-12 border-t border-brand-dark/10 text-brand-dark">
+        <div class="container mx-auto px-6">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 items-start">
+                
+                <div class="flex flex-col items-start">
+                    <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/fl_preserve_transparency/v1770084269/conejo-tochpan-cafe_omsdaq.jpg?_s=public-apps" alt="Tochpan Logo" class="h-28 w-auto object-contain mix-blend-multiply">
+                </div>
+
+                <div>
+                    <h5 class="font-bold text-xs uppercase tracking-widest mb-6 text-brand-dark">Factura tu pedido</h5>
+                    <p class="text-sm text-brand-dark/70 leading-relaxed mb-4 font-medium">
+                        ¿Necesitas comprobante fiscal? Accede a nuestro sistema de facturación en línea con tu ticket de compra.
+                    </p>
+                    <a href="#" class="text-xs underline decoration-brand-dark/30 hover:text-brand-dark hover:decoration-brand-dark transition-colors font-bold">Ir al portal de facturación</a>
+                </div>
+
+                <div class="flex flex-col gap-8">
+                    <div>
+                        <h5 class="font-bold text-xs uppercase tracking-widest mb-6 text-brand-dark">Déjanos una reseña</h5>
+                        <ul class="space-y-3 text-sm text-brand-dark/70 font-medium">
+                            <li>
+                                <a href="#" class="hover:text-brand-dark transition-colors flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                                    Google Review
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="hover:text-brand-dark transition-colors flex items-center gap-2">
+                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                     Buzón de sugerencias
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-xs uppercase tracking-widest mb-4 text-brand-dark">Social</h5>
+                        <a href="https://instagram.com/tochpancafe" class="text-sm font-bold hover:opacity-60 transition-opacity flex items-center gap-2">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                            @tochpancafe
+                        </a>
+                    </div>
+                </div>
+
+                <div class="w-full">
+                    <div class="bg-brand-dark rounded-[12px] p-0 overflow-hidden shadow-lg">
+                        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/7lwvKcw76AHTGR8BDDjj1n?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    </div>
+                    <p class="text-[10px] mt-3 opacity-60 text-right uppercase tracking-widest font-bold">Escucha nuestro mood</p>
+                </div>
+
+            </div>
+
+            <div class="border-t border-brand-dark/10 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-brand-dark/40 uppercase tracking-wide font-bold">
+                <div>
+                    © 2024 Tochpan Café. All Rights Reserved.
+                </div>
+                <div class="mt-4 md:mt-0">
+                    Diseñado con cariño desde Tuxpan.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const instagramToken = ''; // <--- PEGA TU TOKEN AQUÍ (Ej: 'IGQVJ...')
+        const feedContainer = document.getElementById('instagram-feed');
+
+        if(instagramToken) {
+            fetch(`https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink&access_token=${instagramToken}&limit=6`)
+            .then(response => response.json())
+            .then(data => {
+                if(data.data) {
+                    feedContainer.innerHTML = ''; // Limpia el demo
+                    data.data.forEach(post => {
+                        const imgUrl = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
+                        const template = `
+                            <a href="${post.permalink}" target="_blank" class="relative aspect-square overflow-hidden rounded-[2rem] bg-neutral-gray group cursor-pointer block">
+                                <img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Instagram Post">
+                                <div class="absolute inset-0 bg-brand-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                    <svg class="text-white w-8 h-8 drop-shadow-md" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                                </div>
+                            </a>
+                        `;
+                        feedContainer.innerHTML += template;
+                    });
+                }
+            })
+            .catch(error => console.log('Error fetching Instagram feed:', error));
+        }
+    </script>
+
+</body>
+</html>

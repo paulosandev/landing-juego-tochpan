@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tochpan Café - Próximamente</title>
+    
+    <!-- Fuentes de Tochpan -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Cargamos las fuentes estructurales (Sans Serif) -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Cargamos las 3 fuentes decorativas por separado -->
+    <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Just+Me+Again+Down+Here&family=Miniver&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#fef8f3',  // Crema muy claro
+                            beige: '#eae1d7',  // Beige/Arena
+                            dark: '#544540',   // Marrón oscuro
+                        },
+                        neutral: {
+                            gray: '#eceef3',
+                            white: '#ffffff',
+                        },
+                        accent: {
+                            pop: '#FF8C42', 
+                        }
+                    },
+                    fontFamily: {
+                        // Títulos limpios
+                        display: ['"DM Sans"', 'sans-serif'],
+                        // Cuerpo legible
+                        body: ['"Quicksand"', 'sans-serif'],
+                        
+                        // --- Las 3 Fuentes Decorativas ---
+                        // 1. Cedarville Cursive (Estilo firma)
+                        cursive: ['"Cedarville Cursive"', 'cursive'],
+                        // 2. Just Me Again Down Here (Estilo marcador delgado)
+                        marker: ['"Just Me Again Down Here"', 'cursive'],
+                        // 3. Miniver (Estilo retro/vintage)
+                        retro: ['"Miniver"', 'cursive'],
+                    },
+                    borderRadius: {
+                        'brand': '1rem',
+                    }
+                },
+            },
+        }
+    </script>
+
+    <style>
+        body {
+            touch-action: manipulation;
+            -webkit-font-smoothing: antialiased;
+            overscroll-behavior: none; /* Previene rebote en scroll de móvil */
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            background-color: #ffffff;
+            overflow: hidden;
+            border-bottom: 8px solid #eae1d7;
+            touch-action: none; /* CRUCIAL: Desactiva gestos del navegador en el juego */
+        }
+
+        canvas {
+            display: block;
+        }
+        
+        .logo-img {
+            max-height: 120px;
+            width: auto;
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-brand-light text-brand-dark font-body min-h-screen flex flex-col items-center justify-center p-6 selection:bg-brand-beige selection:text-brand-dark">
+
+    <!-- Header / Logo Placeholder -->
+    <div class="text-center mb-8 w-full max-w-lg">
+        <div class="mb-4 flex justify-center">
+            <!-- Logo real -->
+            <img src="https://res.cloudinary.com/dk6mfal8z/image/upload/fl_preserve_transparency/v1770082255/conejo-saltando-tochpan_i7dudp.jpg?_s=public-apps" alt="Tochpan Café Logo" class="logo-img">
+        </div>
+        
+        <!-- Subtítulo: Usamos la fuente 1 (Marker) -->
+        <p class="font-marker text-4xl md:text-5xl text-brand-dark/90 rotate-[-2deg] mt-4 tracking-wide">
+            Estamos preparando algo delicioso...
+        </p>
+    </div>
+
+    <!-- Game Card -->
+    <div class="w-full max-w-4xl bg-neutral-white rounded-brand shadow-xl overflow-hidden border border-brand-beige ring-4 ring-brand-light relative">
+        
+        <!-- Game Dashboard -->
+        <div class="flex justify-between items-center px-6 py-4 bg-brand-dark text-brand-light">
+            <div class="flex gap-6 font-display font-bold tracking-wide items-baseline">
+                <!-- Puntuación: Usamos la fuente 2 (Retro/Miniver) para los números -->
+                <span class="text-sm md:text-base">PUNTOS: <span id="score" class="font-retro text-xl text-brand-beige ml-1 tracking-wider">00000</span></span>
+                <span class="text-brand-light/60 text-xs md:text-sm">RÉCORD: <span id="highscore" class="font-retro text-lg ml-1 tracking-wider">00000</span></span>
+            </div>
+            
+            <!-- Instrucción PC: Usamos la fuente 3 (Cursive) -->
+            <div class="hidden md:block font-cursive text-xl text-brand-beige tracking-wider opacity-90 transform -rotate-1">
+                Espacio para saltar
+            </div>
+        </div>
+
+        <!-- Canvas Area -->
+        <div id="game-container">
+            <canvas id="gameCanvas"></canvas>
+            
+            <!-- Game Over Overlay -->
+            <div id="gameOver" class="absolute inset-0 bg-brand-dark/95 flex flex-col items-center justify-center hidden z-20 backdrop-blur-sm p-4 text-center cursor-pointer">
+                <h2 class="font-display text-4xl font-bold text-brand-light mb-2">¡Ups! Se cayó el café</h2>
+                
+                <!-- Mensaje de ánimo: Fuente Marker -->
+                <p class="font-marker text-5xl text-accent-pop mb-8">Inténtalo otra vez...</p>
+                
+                <button id="retryBtn" class="bg-brand-light text-brand-dark px-10 py-3 rounded-full font-display font-bold uppercase tracking-widest hover:bg-brand-beige transition-transform transform hover:scale-105 active:scale-95 shadow-lg border-2 border-transparent hover:border-brand-dark/10">
+                    Reintentar
+                </button>
+            </div>
+
+            <!-- Start Screen Overlay -->
+            <div id="startScreen" class="absolute inset-0 flex flex-col items-center justify-center z-10 bg-white/60 backdrop-blur-[2px] cursor-pointer">
+                <p class="font-display font-bold text-brand-dark text-xl uppercase tracking-widest mb-2 animate-pulse">
+                    Pulsa para empezar
+                </p>
+                <!-- Instrucción extra: Fuente Cursive -->
+                <p class="font-cursive text-2xl opacity-80 text-brand-dark mt-1">Ayuda al conejo a llegar al café</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Text -->
+    <div class="mt-8 text-center opacity-60 font-medium text-sm">
+        <!-- Footer: Fuente Retro (Miniver) -->
+        <p class="font-retro text-2xl tracking-wide">Cultivando momentos, incluso mientras cargamos.</p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const highscoreElement = document.getElementById('highscore');
+        const gameOverScreen = document.getElementById('gameOver');
+        const startScreen = document.getElementById('startScreen');
+        const retryBtn = document.getElementById('retryBtn');
+
+        const colors = {
+            dark: '#544540',
+            beige: '#eae1d7',
+            light: '#fef8f3'
+        };
+
+        let gameActive = false;
+        let gameStarted = false;
+        let score = 0;
+        let highscore = 0;
+        let speed = 5;
+        let frameCount = 0;
+        let obstacles = [];
+        let animationId;
+
+        const dino = {
+            x: 50,
+            y: 0,
+            width: 45,
+            height: 45,
+            dy: 0,
+            jumpForce: 13,
+            gravity: 0.6,
+            groundY: 0,
+            isJumping: false,
+            emoji: '🐇'
+        };
+
+        function resize() {
+            const container = document.getElementById('game-container');
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            dino.groundY = canvas.height - 25; 
+            
+            if (!gameActive) {
+                dino.y = dino.groundY - dino.height;
+                drawScene();
+            }
+        }
+
+        window.addEventListener('resize', resize);
+        
+        function handleInput(e) {
+            // Prevenir scroll en barra espaciadora
+            if (e.type === 'keydown' && e.code === 'Space') {
+                e.preventDefault();
+            }
+
+            if (!gameStarted) {
+                startGame();
+                return;
+            }
+
+            if (gameActive && !dino.isJumping) {
+                dino.dy = -dino.jumpForce;
+                dino.isJumping = true;
+            }
+        }
+
+        // --- Event Listeners Robustos para Móvil y PC ---
+
+        // 1. Teclado
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' || e.code === 'ArrowUp') handleInput(e);
+        });
+        
+        // 2. Touch en Canvas (Gameplay)
+        canvas.addEventListener('touchstart', (e) => {
+            if(e.cancelable) e.preventDefault(); // Prevenir scroll/zoom
+            handleInput(e);
+        }, { passive: false });
+        
+        // 3. Touch en Start Screen (CORRECCIÓN CRÍTICA: La capa Start cubría el canvas)
+        startScreen.addEventListener('touchstart', (e) => {
+            if(e.cancelable) e.preventDefault();
+            startGame();
+        }, { passive: false });
+
+        startScreen.addEventListener('click', startGame);
+
+        // 4. Touch en Game Over Screen (Para reiniciar rápido)
+        gameOverScreen.addEventListener('touchstart', (e) => {
+             // Solo si no se tocó el botón (que tiene su propio listener)
+            if (e.target !== retryBtn) {
+                 if(e.cancelable) e.preventDefault();
+                 resetGame();
+            }
+        }, { passive: false });
+
+        // 5. Ratón
+        canvas.addEventListener('mousedown', handleInput);
+        
+        // 6. Botón Reintentar
+        retryBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetGame();
+        });
+        // Añadir soporte touch explícito al botón para respuesta instantánea
+        retryBtn.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
+            e.preventDefault(); 
+            resetGame();
+        }, { passive: false });
+
+
+        function createObstacle() {
+            // Alternancia entre Café, Matcha y Postres
+            const types = [
+                // Café
+                { emoji: '☕', w: 35, h: 35, offset: 0 },
+                { emoji: '🥤', w: 30, h: 40, offset: -5 },
+                // Matcha
+                { emoji: '🍵', w: 40, h: 30, offset: 5 },
+                // Postres
+                { emoji: '🍰', w: 35, h: 35, offset: 0 },
+                { emoji: '🍩', w: 35, h: 35, offset: 0 },
+                { emoji: '🥐', w: 40, h: 30, offset: 5 }
+            ];
+            const type = types[Math.floor(Math.random() * types.length)];
+            
+            obstacles.push({
+                x: canvas.width + 50,
+                y: dino.groundY - type.h + (type.offset || 0),
+                width: type.w,
+                height: type.h,
+                emoji: type.emoji
+            });
+        }
+
+        function startGame() {
+            if (gameStarted) return;
+            gameStarted = true;
+            startScreen.classList.add('hidden');
+            resetGame();
+        }
+
+        function resetGame() {
+            score = 0;
+            speed = 5.5; // Un poco más rápido al inicio
+            obstacles = [];
+            gameActive = true;
+            dino.y = dino.groundY - dino.height;
+            dino.dy = 0;
+            dino.isJumping = false;
+            gameOverScreen.classList.add('hidden');
+            
+            if (animationId) cancelAnimationFrame(animationId);
+            update();
+        }
+
+        function drawScene() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 1. Suelo
+            ctx.beginPath();
+            ctx.moveTo(0, dino.groundY);
+            ctx.lineTo(canvas.width, dino.groundY);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = colors.beige;
+            ctx.stroke();
+
+            // 2. Conejo (Volteado hacia la derecha)
+            ctx.save(); // Guardar estado actual
+            // Trasladar al centro del conejo para rotar/escalar
+            ctx.translate(dino.x + dino.width/2, dino.y + dino.height/2);
+            ctx.scale(-1, 1); // Voltear horizontalmente
+            
+            ctx.font = '45px "Segoe UI Emoji", Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            // Dibujar en 0,0 relativo a la traslación
+            ctx.fillText(dino.emoji, 0, 5); // +5 ajuste visual vertical
+            
+            ctx.restore(); // Restaurar estado original (para no voltear el resto del juego)
+        }
+
+        function update() {
+            if (!gameActive) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibujar suelo
+            ctx.beginPath();
+            ctx.moveTo(0, dino.groundY);
+            ctx.lineTo(canvas.width, dino.groundY);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = colors.beige;
+            ctx.stroke();
+
+            // Física
+            dino.dy += dino.gravity;
+            dino.y += dino.dy;
+
+            if (dino.y > dino.groundY - dino.height) {
+                dino.y = dino.groundY - dino.height;
+                dino.dy = 0;
+                dino.isJumping = false;
+            }
+
+            // DIBUJAR CONEJO (Volteado)
+            ctx.save();
+            ctx.translate(dino.x + dino.width/2, dino.y + dino.height/2);
+            ctx.scale(-1, 1); 
+            ctx.font = '45px "Segoe UI Emoji", Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(dino.emoji, 0, 5); 
+            ctx.restore();
+
+            // OBSTÁCULOS
+            let minFrames = Math.floor(110 - speed * 4);
+            if (minFrames < 45) minFrames = 45;
+            
+            if (frameCount % minFrames === 0 && Math.random() > 0.25) {
+                createObstacle();
+            }
+
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                const obs = obstacles[i];
+                obs.x -= speed;
+
+                ctx.font = '35px "Segoe UI Emoji", Arial';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(obs.emoji, obs.x, obs.y + obs.height + 5);
+
+                // Colisiones
+                const hitboxPadding = 14; 
+                if (
+                    dino.x + hitboxPadding < obs.x + obs.width - hitboxPadding &&
+                    dino.x + dino.width - hitboxPadding > obs.x + hitboxPadding &&
+                    dino.y + hitboxPadding < obs.y + obs.height - hitboxPadding &&
+                    dino.y + dino.height - hitboxPadding > obs.y + hitboxPadding
+                ) {
+                    endGame();
+                }
+
+                if (obs.x + obs.width < -50) {
+                    obstacles.splice(i, 1);
+                }
+            }
+
+            // Score
+            score++;
+            if (score % 5 === 0) speed += 0.001; 
+            scoreElement.innerText = Math.floor(score / 5).toString().padStart(5, '0');
+
+            frameCount++;
+            animationId = requestAnimationFrame(update);
+        }
+
+        function endGame() {
+            gameActive = false;
+            const finalScore = Math.floor(score / 5);
+            if (finalScore > highscore) {
+                highscore = finalScore;
+                highscoreElement.innerText = highscore.toString().padStart(5, '0');
+            }
+            gameOverScreen.classList.remove('hidden');
+        }
+
+        // Init
+        window.onload = () => {
+            resize();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Server directory for Node.js backend
+# This directory contains:
+# - db/ - Database layer (SQLite connection, schema)
+# - services/ - Business logic (ScoreService)
+# - controllers/ - HTTP handlers (ScoreController)
+# - middleware/ - Express middleware (rate limiter)
+# - utils/ - Utility functions (PhoneValidator)
+# - index.ts - Express server entry point

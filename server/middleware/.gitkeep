@@ -1,0 +1,2 @@
+# Express middleware
+# - rateLimiter.ts - Rate limiting for score submissions

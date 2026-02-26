@@ -1,0 +1,41 @@
+{
+  "name": "tochpan-cafe-game",
+  "version": "1.0.0",
+  "description": "Tochpan Café runner game with animated sprites and leaderboard",
+  "main": "dist/server/index.js",
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc && tsc -p public/tsconfig.json",
+    "build:server": "tsc",
+    "build:frontend": "tsc -p public/tsconfig.json",
+    "start": "node dist/server/index.js",
+    "dev": "tsx server/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "game",
+    "runner",
+    "canvas",
+    "sprites"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0",
+    "better-sqlite3": "^11.3.0",
+    "express-rate-limit": "^7.4.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.11",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.0",
+    "typescript": "^5.5.4",
+    "tsx": "^4.19.0",
+    "vitest": "^2.0.5",
+    "fast-check": "^3.22.0"
+  }
+}

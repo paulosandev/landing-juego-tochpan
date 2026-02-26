@@ -1,0 +1,6 @@
+# Frontend JavaScript/TypeScript modules
+# - spriteSheet.ts - Sprite sheet loading and frame extraction
+# - animationController.ts - Animation state management
+# - spriteRenderer.ts - Canvas sprite rendering
+# - touchHandler.ts - Touch/pointer input handling
+# - leaderboardUI.ts - Leaderboard display component
