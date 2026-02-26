@@ -1,5 +1,6 @@
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
 import { initializeSchema } from './schema';
 
 let db: Database.Database | null = null;
@@ -13,7 +14,13 @@ export function getDatabase(): Database.Database {
     return db;
   }
 
-  const dbPath = path.join(__dirname, '..', 'data', 'tochpan.db');
+  const dataDir = path.join(__dirname, '..', 'data');
+  const dbPath = path.join(dataDir, 'tochpan.db');
+  
+  // Create data directory if it doesn't exist
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
   
   db = new Database(dbPath);
   
